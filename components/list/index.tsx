@@ -6,14 +6,20 @@ import useTodoStore from "@/stores";
 export default function Main() {
   const store = useTodoStore();
   console.log(store);
-  // todo
-  const handleAdd = () => {};
+
+  const handleDelete = (id: string) => {
+    try {
+      store.deleteTodo(id)
+    } catch(error) {
+      console.log(error)
+    }
+  };
 
   return (
     <div className="pt-4">
       {store.todos.map((item) => (
         <div key={item.id}>
-          <div className="flex items-center space-x-2 mb-1">
+          <div className="flex items-center space-x-2 mb-1" onClick={() => handleDelete(item.id)}>
             <Checkbox id="terms" />
             <label
               htmlFor="terms"
