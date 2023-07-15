@@ -3,6 +3,8 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useTodoStore from "@/stores";
+import {apiCreateTodos} from '@/lib/request'
+import { Todo } from "@prisma/client";
 
 export default function Main() {
   const store = useTodoStore();
@@ -14,14 +16,15 @@ export default function Main() {
   }
 
   // add todo
-  const handleAdd = () => {
+  const handleAdd = async () => {
     store.setPageLoading(true) 
 
     try {
-      store.addTodo({
-        id: String(Math.random() * 1000),
-        title: store.todoValue
-      });
+      const data = await apiCreateTodos({
+        title: store.todoValue,
+        completed: false,
+      });  
+      store.addTodo(data.data.todo);
       store.setPageLoading(false);
       store.changeTodoValue('');
     } catch (error) {

@@ -1,9 +1,6 @@
 import { create } from "zustand";
+import { Todo } from "@prisma/client";
 
-interface Todo {
-  id: string;
-  title: string;
-}
 
 type initialState = {
   page_loading: boolean;
@@ -14,12 +11,12 @@ type initialState = {
   subTodoValue: string;
   addTodo: (todo: Todo) => void;
   setTodoList: (todo: Todo[]) => void;
-  deleteTodo: (id: string) => void;
+  deleteTodo: (id: number) => void;
 };
 
 const useTodoStore = create<initialState>((set) => ({
   page_loading: false,
-  todos: [{ id: "1", title: "first data" }],
+  todos: [],
   todoValue: "",
   subTodoValue: "",
   setPageLoading: (loading: boolean) =>
@@ -34,10 +31,10 @@ const useTodoStore = create<initialState>((set) => ({
       todos: [todo, ...state.todos],
     })),
   setTodoList: (todos) => set((state) => ({ ...state, todos })),
-  deleteTodo: (id: string) =>
+  deleteTodo: (id: number) =>
     set((state) => ({
       ...state,
-      todos: state.todos.filter((todo) => todo.id != id),
+      todos: state.todos.filter((todo) => todo.id !== id),
     })),
 }));
 
