@@ -3,7 +3,7 @@
 import {useEffect} from 'react'
 import { Checkbox } from "@/components/ui/checkbox";
 import useTodoStore from "@/stores";
-import { apiFetchTodos, apiDeleteTodos } from "@/lib/request";
+import { apiFetchTodos, apiUpdateTodos, apiDeleteTodos } from "@/lib/request";
 
 export default function Main() {
   const store = useTodoStore();
@@ -29,7 +29,18 @@ export default function Main() {
     try {
       await apiDeleteTodos(id);
       store.deleteTodo(id);
-      console.log('id', id)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUpdate = async (id: number, completed: boolean) => {
+    try {
+      console.log('11', id);
+      await apiUpdateTodos(id, {
+        completed: !completed
+      });
+      store.deleteTodo(id);
     } catch (error) {
       console.log(error);
     }
@@ -50,10 +61,10 @@ export default function Main() {
           <div
             className="flex items-center space-x-2 mb-3"
           >
-            <Checkbox id="terms" />
+            <Checkbox id="terms" checked={item.completed} onCheckedChange={() => handleUpdate(item.id, item.completed)} />
             <label
               htmlFor="terms"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${item.completed && 'line-through'}`}
             >
               {item.title}
             </label>

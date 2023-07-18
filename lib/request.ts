@@ -52,6 +52,23 @@ export async function apiCreateTodos(
   );
 }
 
+export async function apiUpdateTodos(
+  id: number, 
+  todoData: Partial<Todo> 
+): Promise<TodoListResponse<{todo: Todo}>> {
+    const response = await fetch(`${SERVER_ENDPOINT}/api/todos/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(todoData),
+  });
+
+  return handleResponse<TodoListResponse<{todo: Todo}>>(response).then(
+    (data) => data
+  );
+}
+
 export async function apiDeleteTodos(
   id: number 
 ): Promise<TodoListResponse<unknown>> {
