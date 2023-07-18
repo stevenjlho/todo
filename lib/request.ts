@@ -51,3 +51,15 @@ export async function apiCreateTodos(
     (data) => data
   );
 }
+
+export async function apiDeleteTodos(
+  id: number 
+): Promise<TodoListResponse<unknown>> {
+    const response = await fetch(`${SERVER_ENDPOINT}/api/todos/${id}`, {
+    method: "DELETE",
+  });
+
+  return handleResponse<TodoListResponse<unknown>>(response).then(
+    (data) => data
+  );
+}

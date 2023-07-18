@@ -3,7 +3,7 @@
 import {useEffect} from 'react'
 import { Checkbox } from "@/components/ui/checkbox";
 import useTodoStore from "@/stores";
-import { apiFetchTodos } from "@/lib/request";
+import { apiFetchTodos, apiDeleteTodos } from "@/lib/request";
 
 export default function Main() {
   const store = useTodoStore();
@@ -24,9 +24,12 @@ export default function Main() {
     store.setPageLoading(false);
   };
 
-  const handleDelete = (id: number) => {
+  // todo
+  const handleDelete = async (id: number) => {
     try {
+      await apiDeleteTodos(id);
       store.deleteTodo(id);
+      console.log('id', id)
     } catch (error) {
       console.log(error);
     }
@@ -45,8 +48,7 @@ export default function Main() {
       {store.todos.map((item) => (
         <div key={item.id}>
           <div
-            className="flex items-center space-x-2 mb-1"
-            onClick={() => handleDelete(item.id)}
+            className="flex items-center space-x-2 mb-3"
           >
             <Checkbox id="terms" />
             <label

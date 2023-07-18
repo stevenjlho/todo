@@ -67,3 +67,34 @@ export async function POST(request: NextRequest) {
     });
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const idStr = request.nextUrl.searchParams.get("id");
+
+    await prisma.todo.delete({
+      where: {
+        id: Number(idStr),
+      },
+    });
+
+    let json_response = {
+      status: "success",
+      data: {
+      },
+    };
+    return new NextResponse(JSON.stringify(json_response), {
+      status: 201,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error: any) {
+    let error_response = {
+      status: "error",
+      message: error.message,
+    };
+    return new NextResponse(JSON.stringify(error_response), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+}
