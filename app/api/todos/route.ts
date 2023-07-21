@@ -1,10 +1,13 @@
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 const prisma = new PrismaClient();
 
 export async function GET(request: NextRequest) {
   try {
+    const session = await getServerSession(authOptions);
     const pageStr = request.nextUrl.searchParams.get("page");
     const limitStr = request.nextUrl.searchParams.get("limit");
     const page = pageStr ? parseInt(pageStr, 10) : 1;
@@ -17,6 +20,9 @@ export async function GET(request: NextRequest) {
       orderBy: {
         createdAt: "desc",
       },
+      where: {
+        userId: session?.user.id 
+      }
     });
     let response = {
       status: "success",
@@ -40,10 +46,13 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const session = await getServerSession(authOptions);
     const json = await request.json();
-
     const todo = await prisma.todo.create({
-      data: json,
+      data: {
+        ...json,
+        userId: session?.user.id 
+      },
     });
 
     let json_response = {

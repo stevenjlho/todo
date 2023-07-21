@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 export default function Main() {
   const store = useTodoStore();
   const { data: session } = useSession();
+  console.log('client', session)
 
   const fetchTodos = async () => {
     const page = 1;
