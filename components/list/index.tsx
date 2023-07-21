@@ -10,7 +10,6 @@ import { useSession } from "next-auth/react";
 export default function Main() {
   const store = useTodoStore();
   const { data: session } = useSession();
-  console.log('session', session)
 
   const fetchTodos = async () => {
     const page = 1;
@@ -40,7 +39,6 @@ export default function Main() {
 
   const handleUpdate = async (id: number, completed: boolean) => {
     try {
-      console.log('11', id);
       await apiUpdateTodos(id, {
         completed: !completed
       });
