@@ -4,13 +4,9 @@ import {useEffect} from 'react'
 import { Checkbox } from "@/components/ui/checkbox";
 import useTodoStore from "@/stores";
 import { apiFetchTodos, apiUpdateTodos, apiDeleteTodos } from "@/lib/request";
-import { useSession } from "next-auth/react";
-
 
 export default function Main() {
   const store = useTodoStore();
-  const { data: session } = useSession();
-  console.log('client', session)
 
   const fetchTodos = async () => {
     const page = 1;
