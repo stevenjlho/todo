@@ -25,10 +25,11 @@ async function handleResponse<T>(response: Response): Promise<T> {
 
 export async function apiFetchTodos(
   page: number,
-  limit: number
+  limit: number,
+  type: number,
 ): Promise<TodoListResponse<{todos: Todo[]}>> {
   const response = await fetch(
-    `${SERVER_ENDPOINT}/api/todos?page=${page}&limit=${limit}`
+    `${SERVER_ENDPOINT}/api/todos?page=${page}&limit=${limit}&type=${type}`
   );
 
   return handleResponse<TodoListResponse<{todos: Todo[]}>>(response).then(

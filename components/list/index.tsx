@@ -11,11 +11,10 @@ export default function Main() {
   const fetchTodos = async () => {
     const page = 1;
     const limit = 10;
-
     store.setPageLoading(true);
 
     try {
-      const {data} = await apiFetchTodos(page, limit);
+      const {data} = await apiFetchTodos(page, limit, store.todoType);
       store.setTodoList(data?.todos ?? []);
     } catch (error: any) {
       console.log(error);
