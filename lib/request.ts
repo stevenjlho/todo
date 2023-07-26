@@ -37,7 +37,7 @@ export async function apiFetchTodos(
 }
 
 export async function apiCreateTodos(
-  todoData: Pick<Todo, 'title' | 'completed'> 
+  todoData: Pick<Todo, 'title' | 'completed' | 'type'> 
 ): Promise<TodoListResponse<{todo: Todo}>> {
     const response = await fetch(`${SERVER_ENDPOINT}/api/todos/`, {
     method: "POST",

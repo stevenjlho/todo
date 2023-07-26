@@ -7,6 +7,7 @@ type initialState = {
   setPageLoading: (loading: boolean) => void;
   todos: Todo[];
   todoValue: string;
+  todoType: number,
   changeTodoValue: (todo: string) => void
   subTodoValue: string;
   addTodo: (todo: Todo) => void;
@@ -19,6 +20,7 @@ const useTodoStore = create<initialState>((set) => ({
   todos: [],
   todoValue: "",
   subTodoValue: "",
+  todoType: 1,
   setPageLoading: (loading: boolean) =>
     set((state) => ({ ...state, page_loading: loading })),
   changeTodoValue: (todo) =>
@@ -31,6 +33,11 @@ const useTodoStore = create<initialState>((set) => ({
       todos: [todo, ...state.todos],
     })),
   setTodoList: (todos) => set((state) => ({ ...state, todos })),
+  updateTodo: (id: number) =>
+    set((state) => ({
+      ...state,
+      todos: state.todos.filter((todo) => todo.id !== id),
+    })),
   deleteTodo: (id: number) =>
     set((state) => ({
       ...state,
