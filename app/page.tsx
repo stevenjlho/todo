@@ -9,15 +9,15 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 export default async function Home() {
   const session = await getServerSession(authOptions);
   return (
-    <>
+    <div className="flex flex-col h-screen">
       <Topbar />
-      <div className="flex">
+      <div className="flex flex-1">
         <Sidebar />
-        <div className="flex-auto">
+        <div className="flex-auto m-6">
           <Add />
           <List />
         </div>
       </div>
-    </>
+    </div>
   );
 }

@@ -18,7 +18,7 @@ import {
 export default function TopBar() {
   const { data: session } = useSession();
   return (
-    <div className="flex justify-end">
+    <div className="flex justify-end bg-blue-600">
       {session ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
