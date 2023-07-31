@@ -5,14 +5,14 @@ const prisma = new PrismaClient();
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: number } }
+  { params }: { params: { id: string } }
 ) {
   try {
     const id = params.id;
     const json = await request.json();
 
     const todo = await prisma.todo.update({
-       where: { id: Number(id) },
+       where: { id },
        data: json
     });
 
@@ -41,12 +41,12 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: number } }
+  { params }: { params: { id: string } }
 ) {
   try {
     const id = params.id;
     await prisma.todo.delete({
-       where: { id: Number(id) },
+       where: { id },
     });
 
     let json_response = {
