@@ -19,7 +19,7 @@ export default function TopBar() {
   const { data: session } = useSession();
   return (
     <div className="flex justify-end bg-blue-600">
-      {session ? (
+      {session && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="link"><User className="mr-2 h-4 w-4" />{session?.user?.name}</Button>
@@ -27,12 +27,10 @@ export default function TopBar() {
           <DropdownMenuContent className="w-56">
             <DropdownMenuItem>
               <LogOut className="mr-2 h-4 w-4" />
-              <span className="cursor-pointer" onClick={() => signIn()}>Log out</span>
+              <span className="cursor-pointer" onClick={() => signOut()}>Log out</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      ) : (
-        <Button onClick={() => signIn()}>Sign In</Button>
       )}
     </div>
   );

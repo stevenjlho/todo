@@ -3,11 +3,8 @@ import Topbar from "@/components/topbar";
 import Sidebar from "@/components/sidebar";
 import Add from "@/components/add";
 import List from "@/components/list";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export default async function Home() {
-  const session = await getServerSession(authOptions);
   return (
     <div className="flex flex-col h-screen">
       <Topbar />
