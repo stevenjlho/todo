@@ -13,7 +13,7 @@ type initialState = {
   subTodoValue: string;
   addTodo: (todo: Todo) => void;
   setTodoList: (todo: Todo[]) => void;
-  deleteTodo: (id: number) => void;
+  deleteTodo: (id: string) => void;
 };
 
 const useTodoStore = create<initialState>((set) => ({
@@ -38,12 +38,12 @@ const useTodoStore = create<initialState>((set) => ({
       todos: [todo, ...state.todos],
     })),
   setTodoList: (todos) => set((state) => ({ ...state, todos })),
-  updateTodo: (id: number) =>
+  updateTodo: (id: string) =>
     set((state) => ({
       ...state,
       todos: state.todos.filter((todo) => todo.id !== id),
     })),
-  deleteTodo: (id: number) =>
+  deleteTodo: (id: string) =>
     set((state) => ({
       ...state,
       todos: state.todos.filter((todo) => todo.id !== id),

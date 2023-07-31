@@ -24,7 +24,7 @@ export default function Main() {
   };
 
   // todo
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     try {
       await apiDeleteTodos(id);
       store.deleteTodo(id);
@@ -33,7 +33,7 @@ export default function Main() {
     }
   };
 
-  const handleUpdate = async (id: number, completed: boolean) => {
+  const handleUpdate = async (id: string, completed: boolean) => {
     try {
       await apiUpdateTodos(id, {
         completed: !completed

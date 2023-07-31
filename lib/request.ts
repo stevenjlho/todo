@@ -54,7 +54,7 @@ export async function apiCreateTodos(
 }
 
 export async function apiUpdateTodos(
-  id: number, 
+  id: string, 
   todoData: Partial<Todo> 
 ): Promise<TodoListResponse<{todo: Todo}>> {
     const response = await fetch(`${SERVER_ENDPOINT}/api/todos/${id}`, {
@@ -71,7 +71,7 @@ export async function apiUpdateTodos(
 }
 
 export async function apiDeleteTodos(
-  id: number 
+  id: string 
 ): Promise<TodoListResponse<unknown>> {
     const response = await fetch(`${SERVER_ENDPOINT}/api/todos/${id}`, {
     method: "DELETE",
