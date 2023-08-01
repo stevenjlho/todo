@@ -120,7 +120,7 @@ export default function Main() {
         className="flex items-center content-center cursor-pointer"
         onClick={() => setVisible(!visible)}
       >
-        <ChevronRight />
+        {visible ? <ChevronDown /> : <ChevronRight />}
         <span className="pr-3">Completed</span>
         <span>{completedList.length}</span>
       </div>
