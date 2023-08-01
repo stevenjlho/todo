@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import useTodoStore from "@/stores";
 import { apiFetchTodos, apiUpdateTodos, apiDeleteTodos } from "@/lib/request";
+import { ChevronRight, ChevronDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
   SheetClose,
@@ -19,6 +21,7 @@ import {
 
 export default function Main() {
   const store = useTodoStore();
+  const [visible, setVisible] = useState(false);
 
   const fetchTodos = async () => {
     const page = 1;
@@ -50,13 +53,13 @@ export default function Main() {
       await apiUpdateTodos(id, {
         completed: !completed,
       });
-      const list = store.todos.map(item => {
+      const list = store.todos.map((item) => {
         return {
           ...item,
           completed: item.id === id ? !item.completed : item.completed,
-        }
-      })
-      store.setTodoList(list)
+        };
+      });
+      store.setTodoList(list);
       // store.deleteTodo(id);
     } catch (error) {
       console.log(error);
@@ -71,42 +74,74 @@ export default function Main() {
     // };
   }, []);
 
+  // work out the length of items which are completed
+  const completedList = useMemo(() => {
+    return store.todos.filter((item) => item.completed);
+  }, [store.todos]);
+
   return (
     <div className="pt-4">
-      {store.todos.map((item) => (
-        <Sheet key={item.id}>
-          <div className="flex items-center space-x-2 mb-3">
-            <Checkbox
-              id={item.id}
-              checked={item.completed}
-              onCheckedChange={() => handleUpdate(item.id, item.completed)}
-            />
-            <SheetTrigger asChild>
+      <div className="pb-5">
+        {store.todos
+          .filter((item) => !!!item.completed)
+          .map((item) => (
+            <Sheet key={item.id}>
+              <div className="flex items-center space-x-2 mb-3">
+                <Checkbox
+                  id={item.id}
+                  checked={item.completed}
+                  onCheckedChange={() => handleUpdate(item.id, item.completed)}
+                />
+                <SheetTrigger asChild>
+                  <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    {item.title}
+                  </label>
+                </SheetTrigger>
+              </div>
+              <SheetContent side="right">
+                <SheetHeader>
+                  <SheetTitle>{item.title}</SheetTitle>
+                </SheetHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-4 items-center gap-4"></div>
+                  <div className="grid grid-cols-4 items-center gap-4"></div>
+                </div>
+                <SheetFooter>
+                  <SheetClose asChild>
+                    <Button type="submit">Save changes</Button>
+                  </SheetClose>
+                </SheetFooter>
+              </SheetContent>
+            </Sheet>
+          ))}
+      </div>
+      <Separator className="my-4" />
+      <div
+        className="flex items-center content-center cursor-pointer"
+        onClick={() => setVisible(!visible)}
+      >
+        <ChevronRight />
+        <span className="pr-3">Completed</span>
+        <span>{completedList.length}</span>
+      </div>
+      <div className="ml-4 mt-3">
+        {visible &&
+          completedList.map((item) => (
+            <div key={item.id} className="flex items-center space-x-2 mb-2">
+              <Checkbox
+                id={item.id}
+                checked={item.completed}
+                onCheckedChange={() => handleUpdate(item.id, item.completed)}
+              />
               <label
-                className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
-                  item.completed && "line-through"
-                }`}
+                htmlFor={item.id}
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 line-through"
               >
                 {item.title}
               </label>
-            </SheetTrigger>
-          </div>
-          <SheetContent side="right">
-            <SheetHeader>
-              <SheetTitle>{item.title}</SheetTitle>
-            </SheetHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4"></div>
-              <div className="grid grid-cols-4 items-center gap-4"></div>
             </div>
-            <SheetFooter>
-              <SheetClose asChild>
-                <Button type="submit">Save changes</Button>
-              </SheetClose>
-            </SheetFooter>
-          </SheetContent>
-        </Sheet>
-      ))}
+          ))}
+      </div>
     </div>
   );
 }
