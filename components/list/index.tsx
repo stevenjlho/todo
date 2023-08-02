@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import useTodoStore from "@/stores";
 import { apiFetchTodos, apiUpdateTodos, apiDeleteTodos } from "@/lib/request";
-import { ChevronRight, ChevronDown } from "lucide-react";
+import { ChevronRight, ChevronDown, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -12,7 +12,6 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
@@ -22,6 +21,7 @@ import {
 export default function Main() {
   const store = useTodoStore();
   const [visible, setVisible] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const fetchTodos = async () => {
     const page = 1;
@@ -38,11 +38,11 @@ export default function Main() {
     store.setPageLoading(false);
   };
 
-  // todo
   const handleDelete = async (id: string) => {
     try {
       await apiDeleteTodos(id);
       store.deleteTodo(id);
+      setOpen(false)
     } catch (error) {
       console.log(error);
     }
@@ -85,7 +85,7 @@ export default function Main() {
         {store.todos
           .filter((item) => !!!item.completed)
           .map((item) => (
-            <Sheet key={item.id}>
+            <Sheet open={open} onOpenChange={setOpen} key={item.id}>
               <div className="flex items-center space-x-2 mb-3">
                 <Checkbox
                   id={item.id}
@@ -108,7 +108,9 @@ export default function Main() {
                 </div>
                 <SheetFooter>
                   <SheetClose asChild>
-                    <Button type="submit">Save changes</Button>
+                    <Button variant="destructive" size="icon" onClick={() => handleDelete(item.id)}>
+                      <Trash2 className="h-4 w-4" /> 
+                    </Button>
                   </SheetClose>
                 </SheetFooter>
               </SheetContent>
