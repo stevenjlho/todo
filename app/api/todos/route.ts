@@ -10,7 +10,6 @@ export async function GET(request: NextRequest) {
     const session = await getServerSession(authOptions);
     const pageStr = request.nextUrl.searchParams.get("page");
     const limitStr = request.nextUrl.searchParams.get("limit");
-    const type = request.nextUrl.searchParams.get("type");
     const page = pageStr ? parseInt(pageStr, 10) : 1;
     const limit = limitStr ? parseInt(limitStr, 10) : 10;
     const skip = (page - 1) * limit;
@@ -23,7 +22,6 @@ export async function GET(request: NextRequest) {
       },
       where: {
         userId: session?.user.id,
-        type: Number(type)
       }
     });
     let response = {
@@ -85,7 +83,7 @@ export async function DELETE(request: NextRequest) {
 
     await prisma.todo.delete({
       where: {
-        id: Number(idStr),
+        id: idStr as string,
       },
     });
 

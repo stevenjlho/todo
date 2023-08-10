@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useTodoStore from "@/stores";
 import { apiCreateTodos } from "@/lib/request";
-import { TodoType } from "@/lib/constant";
 
 export default function Main() {
   const store = useTodoStore();
@@ -23,7 +22,6 @@ export default function Main() {
       const data = await apiCreateTodos({
         title: store.todoValue,
         completed: false,
-        type: TodoType.New,
       });
       store.addTodo(data.data.todo);
       store.setPageLoading(false);

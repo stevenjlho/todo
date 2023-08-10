@@ -26,10 +26,9 @@ async function handleResponse<T>(response: Response): Promise<T> {
 export async function apiFetchTodos(
   page: number,
   limit: number,
-  type: number,
 ): Promise<TodoListResponse<{todos: Todo[]}>> {
   const response = await fetch(
-    `${SERVER_ENDPOINT}/api/todos?page=${page}&limit=${limit}&type=${type}`
+    `${SERVER_ENDPOINT}/api/todos?page=${page}&limit=${limit}`
   );
 
   return handleResponse<TodoListResponse<{todos: Todo[]}>>(response).then(
@@ -38,7 +37,7 @@ export async function apiFetchTodos(
 }
 
 export async function apiCreateTodos(
-  todoData: Pick<Todo, 'title' | 'completed' | 'type'> 
+  todoData: Pick<Todo, 'title' | 'completed'> 
 ): Promise<TodoListResponse<{todo: Todo}>> {
     const response = await fetch(`${SERVER_ENDPOINT}/api/todos/`, {
     method: "POST",

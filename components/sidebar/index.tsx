@@ -16,7 +16,7 @@ export default function Sidebar() {
       store.setPageLoading(true);
 
       store.changeTodoType(type)
-      const {data} = await apiFetchTodos(page, limit, type);
+      const {data} = await apiFetchTodos(page, limit);
       store.setTodoList(data?.todos ?? []);
     } catch(error) {
       console.log(error)
