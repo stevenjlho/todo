@@ -4,14 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useTodoStore from "@/stores";
 import { apiCreateTodos } from "@/lib/request";
+import { useState } from "react";
 
 export default function Main() {
   const store = useTodoStore();
+  const [value, setValue] = useState('');
 
   // set todoValue from input value
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const val = event.target.value;
-    store.changeTodoValue(val);
+    setValue(val);
   };
 
   // add todo
@@ -25,7 +27,7 @@ export default function Main() {
       });
       store.addTodo(data.data.todo);
       store.setPageLoading(false);
-      store.changeTodoValue("");
+      setValue("");
     } catch (error) {
       console.error(error);
       store.setPageLoading(false);
