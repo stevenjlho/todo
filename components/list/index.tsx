@@ -5,6 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import useTodoStore from "@/stores";
 import { apiFetchTodos, apiUpdateTodos, apiDeleteTodos } from "@/lib/request";
 import { ChevronRight, ChevronDown, Trash2, Star } from "lucide-react";
+import type { Todo } from "@prisma/client";
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -17,7 +18,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import {TodoType} from '@/lib/constant'
 
 export default function Main() {
   const store = useTodoStore();
@@ -49,19 +49,23 @@ export default function Main() {
     }
   };
 
-  const handleUpdate = async (id: string, completed: boolean) => {
+  const handleUpdate = async (item: Todo, field: keyof Todo) => {
     try {
-      await apiUpdateTodos(id, {
-        completed: !completed,
+      await apiUpdateTodos(item.id, {
+        [field]: !item[field],
       });
-      const list = store.todos.map((item) => {
-        return {
-          ...item,
-          completed: item.id === id ? !item.completed : item.completed,
-        };
+      const list = store.todos.map((storeItem) => {
+        if (item.id === storeItem.id) {
+          return {
+            ...storeItem,
+            [field]: !item[field],
+          };
+        } else {
+          return storeItem
+        }
       });
+      console.log("list", list);
       store.setTodoList(list);
-      // store.deleteTodo(id);
     } catch (error) {
       console.log(error);
     }
@@ -69,10 +73,7 @@ export default function Main() {
 
   useEffect(() => {
     fetchTodos();
-    // window.addEventListener("focus", fetchFeedbacks);
-    // return () => {
-    //   window.removeEventListener("focus", fetchFeedbacks);
-    // };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // work out the length of items which are completed
@@ -83,48 +84,54 @@ export default function Main() {
   return (
     <div className="pt-4">
       <div className="pb-5">
-        {store.todos
-          .map((item) => (
-            <Sheet open={open} onOpenChange={setOpen} key={item.id}>
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id={item.id}
-                    checked={item.completed}
-                    onCheckedChange={() =>
-                      handleUpdate(item.id, item.completed)
-                    }
-                  />
-                  <SheetTrigger asChild>
-                    <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      {item.title}
-                    </label>
-                  </SheetTrigger>
-                </div>
-                {item.important ? <Star color="#f4e21a" fill='#f4e21a' /> : <Star />}
+        {store.todos.map((item) => (
+          <Sheet open={open} onOpenChange={setOpen} key={item.id}>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id={item.id}
+                  checked={item.completed}
+                  onCheckedChange={() =>
+                    handleUpdate(item, 'completed')
+                  }
+                />
+                <SheetTrigger asChild>
+                  <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    {item.title}
+                  </label>
+                </SheetTrigger>
               </div>
-              <SheetContent side="right">
-                <SheetHeader>
-                  <SheetTitle>{item.title}</SheetTitle>
-                </SheetHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4"></div>
-                  <div className="grid grid-cols-4 items-center gap-4"></div>
-                </div>
-                <SheetFooter>
-                  <SheetClose asChild>
-                    <Button
-                      variant="destructive"
-                      size="icon"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </SheetClose>
-                </SheetFooter>
-              </SheetContent>
-            </Sheet>
-          ))}
+              {/* <span onClick={() => handleUpdateImportant(item.id, item.important)}> */}
+              <span onClick={() => handleUpdate(item, "important")}>
+                {item.important ? (
+                  <Star color="#f4e21a" fill="#f4e21a" />
+                ) : (
+                  <Star />
+                )}
+              </span>
+            </div>
+            <SheetContent side="right">
+              <SheetHeader>
+                <SheetTitle>{item.title}</SheetTitle>
+              </SheetHeader>
+              <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-4 items-center gap-4"></div>
+                <div className="grid grid-cols-4 items-center gap-4"></div>
+              </div>
+              <SheetFooter>
+                <SheetClose asChild>
+                  <Button
+                    variant="destructive"
+                    size="icon"
+                    onClick={() => handleDelete(item.id)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </SheetClose>
+              </SheetFooter>
+            </SheetContent>
+          </Sheet>
+        ))}
       </div>
       <Separator className="my-4" />
       <div
@@ -142,7 +149,9 @@ export default function Main() {
               <Checkbox
                 id={item.id}
                 checked={item.completed}
-                onCheckedChange={() => handleUpdate(item.id, item.completed)}
+                onCheckedChange={() =>
+                  handleUpdate(item, 'completed')
+                }
               />
               <label
                 htmlFor={item.id}
