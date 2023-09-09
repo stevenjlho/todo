@@ -5,6 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import useTodoStore from "@/stores";
 import { apiFetchTodos, apiUpdateTodos, apiDeleteTodos } from "@/lib/request";
 import { ChevronRight, ChevronDown, Trash2, Star } from "lucide-react";
+import { TodoType } from "@/lib/constant";
 import type { Todo } from "@prisma/client";
 
 import { Button } from "@/components/ui/button";
@@ -61,7 +62,7 @@ export default function Main() {
             [field]: !item[field],
           };
         } else {
-          return storeItem
+          return storeItem;
         }
       });
       console.log("list", list);
@@ -76,6 +77,14 @@ export default function Main() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const todosList = useMemo(() => {
+    if (store.todoType === TodoType.Important) {
+      return store.todos.filter((item) => item.important);
+    } else {
+      return store.todos;
+    }
+  }, [store.todos, store.todoType]);
+
   // work out the length of items which are completed
   const completedList = useMemo(() => {
     return store.todos.filter((item) => item.completed);
@@ -84,16 +93,14 @@ export default function Main() {
   return (
     <div className="pt-4">
       <div className="pb-5">
-        {store.todos.map((item) => (
+        {todosList.map((item) => (
           <Sheet open={open} onOpenChange={setOpen} key={item.id}>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id={item.id}
                   checked={item.completed}
-                  onCheckedChange={() =>
-                    handleUpdate(item, 'completed')
-                  }
+                  onCheckedChange={() => handleUpdate(item, "completed")}
                 />
                 <SheetTrigger asChild>
                   <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
@@ -149,9 +156,7 @@ export default function Main() {
               <Checkbox
                 id={item.id}
                 checked={item.completed}
-                onCheckedChange={() =>
-                  handleUpdate(item, 'completed')
-                }
+                onCheckedChange={() => handleUpdate(item, "completed")}
               />
               <label
                 htmlFor={item.id}
