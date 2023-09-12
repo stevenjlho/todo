@@ -1,4 +1,4 @@
-import dynamicIconImports from 'lucide-react/dynamicIconImports';
+import dynamicIconImports from "lucide-react/dynamicIconImports";
 
 export enum TodoType {
   New = 1,
@@ -8,7 +8,7 @@ export enum TodoType {
 interface TodoTypeProps {
   value: number;
   label: string;
-  icon: keyof typeof dynamicIconImports
+  icon: keyof typeof dynamicIconImports;
 }
 
 export const todoTypeList: TodoTypeProps[] = [

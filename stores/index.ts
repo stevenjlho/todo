@@ -1,14 +1,13 @@
 import { create } from "zustand";
 import { Todo } from "@prisma/client";
 
-
 type initialState = {
   page_loading: boolean;
   setPageLoading: (loading: boolean) => void;
   todos: Todo[];
   todoValue: string;
-  todoType: number,
-  changeTodoType: (todo: number) => void
+  todoType: number;
+  changeTodoType: (todo: number) => void;
   subTodoValue: string;
   addTodo: (todo: Todo) => void;
   setTodoList: (todo: Todo[]) => void;

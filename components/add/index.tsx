@@ -8,7 +8,7 @@ import { useState } from "react";
 
 export default function Main() {
   const store = useTodoStore();
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
 
   // set todoValue from input value
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

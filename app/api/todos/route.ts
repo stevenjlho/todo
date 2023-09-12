@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
       },
       where: {
         userId: session?.user.id,
-      }
+      },
     });
     let response = {
       status: "success",
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     const todo = await prisma.todo.create({
       data: {
         ...json,
-        userId: session?.user.id 
+        userId: session?.user.id,
       },
     });
 
@@ -89,8 +89,7 @@ export async function DELETE(request: NextRequest) {
 
     let json_response = {
       status: "success",
-      data: {
-      },
+      data: {},
     };
     return new NextResponse(JSON.stringify(json_response), {
       status: 201,

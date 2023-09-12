@@ -4,8 +4,7 @@ import { Inter } from "next/font/google";
 import { NextAuthProvider } from "./providers";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { redirect } from 'next/navigation'
-
+import { redirect } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,16 +19,14 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession(authOptions);
-  if(!session) {
-    redirect('/api/auth/signin')
+  if (!session) {
+    redirect("/api/auth/signin");
   }
 
   return (
     <html lang="en">
       <body className={`${inter.className}`}>
-        <NextAuthProvider>
-            {children}
-        </NextAuthProvider>
+        <NextAuthProvider>{children}</NextAuthProvider>
       </body>
     </html>
   );

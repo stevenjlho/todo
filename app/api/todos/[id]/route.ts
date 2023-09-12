@@ -12,14 +12,14 @@ export async function PATCH(
     const json = await request.json();
 
     const todo = await prisma.todo.update({
-       where: { id },
-       data: json
+      where: { id },
+      data: json,
     });
 
     let json_response = {
       status: "success",
       data: {
-        todo
+        todo,
       },
     };
     return new NextResponse(JSON.stringify(json_response), {
@@ -38,7 +38,6 @@ export async function PATCH(
   }
 }
 
-
 export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -46,13 +45,12 @@ export async function DELETE(
   try {
     const id = params.id;
     await prisma.todo.delete({
-       where: { id },
+      where: { id },
     });
 
     let json_response = {
       status: "success",
-      data: {
-      },
+      data: {},
     };
     return new NextResponse(JSON.stringify(json_response), {
       status: 201,

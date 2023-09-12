@@ -25,21 +25,21 @@ async function handleResponse<T>(response: Response): Promise<T> {
 
 export async function apiFetchTodos(
   page: number,
-  limit: number,
-): Promise<TodoListResponse<{todos: Todo[]}>> {
+  limit: number
+): Promise<TodoListResponse<{ todos: Todo[] }>> {
   const response = await fetch(
     `${SERVER_ENDPOINT}/api/todos?page=${page}&limit=${limit}`
   );
 
-  return handleResponse<TodoListResponse<{todos: Todo[]}>>(response).then(
+  return handleResponse<TodoListResponse<{ todos: Todo[] }>>(response).then(
     (data) => data
   );
 }
 
 export async function apiCreateTodos(
-  todoData: Pick<Todo, 'title' | 'completed'> 
-): Promise<TodoListResponse<{todo: Todo}>> {
-    const response = await fetch(`${SERVER_ENDPOINT}/api/todos/`, {
+  todoData: Pick<Todo, "title" | "completed">
+): Promise<TodoListResponse<{ todo: Todo }>> {
+  const response = await fetch(`${SERVER_ENDPOINT}/api/todos/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -47,16 +47,16 @@ export async function apiCreateTodos(
     body: JSON.stringify(todoData),
   });
 
-  return handleResponse<TodoListResponse<{todo: Todo}>>(response).then(
+  return handleResponse<TodoListResponse<{ todo: Todo }>>(response).then(
     (data) => data
   );
 }
 
 export async function apiUpdateTodos(
-  id: string, 
-  todoData: Partial<Todo> 
-): Promise<TodoListResponse<{todo: Todo}>> {
-    const response = await fetch(`${SERVER_ENDPOINT}/api/todos/${id}`, {
+  id: string,
+  todoData: Partial<Todo>
+): Promise<TodoListResponse<{ todo: Todo }>> {
+  const response = await fetch(`${SERVER_ENDPOINT}/api/todos/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -64,15 +64,15 @@ export async function apiUpdateTodos(
     body: JSON.stringify(todoData),
   });
 
-  return handleResponse<TodoListResponse<{todo: Todo}>>(response).then(
+  return handleResponse<TodoListResponse<{ todo: Todo }>>(response).then(
     (data) => data
   );
 }
 
 export async function apiDeleteTodos(
-  id: string 
+  id: string
 ): Promise<TodoListResponse<unknown>> {
-    const response = await fetch(`${SERVER_ENDPOINT}/api/todos/${id}`, {
+  const response = await fetch(`${SERVER_ENDPOINT}/api/todos/${id}`, {
     method: "DELETE",
   });
 

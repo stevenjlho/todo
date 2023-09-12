@@ -9,11 +9,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {
-  User,
-  LogOut,
-} from "lucide-react"
+} from "@/components/ui/dropdown-menu";
+import { User, LogOut } from "lucide-react";
 
 export default function TopBar() {
   const { data: session } = useSession();
@@ -22,12 +19,17 @@ export default function TopBar() {
       {session && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="link"><User className="mr-2 h-4 w-4" />{session?.user?.name}</Button>
+            <Button variant="link">
+              <User className="mr-2 h-4 w-4" />
+              {session?.user?.name}
+            </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
             <DropdownMenuItem>
               <LogOut className="mr-2 h-4 w-4" />
-              <span className="cursor-pointer" onClick={() => signOut()}>Log out</span>
+              <span className="cursor-pointer" onClick={() => signOut()}>
+                Log out
+              </span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
