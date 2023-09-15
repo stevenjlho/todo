@@ -22,7 +22,7 @@ export default function Main() {
 
     try {
       const data = await apiCreateTodos({
-        title: store.todoValue,
+        title: value,
         completed: false,
       });
       store.addTodo(data.data.todo);
@@ -37,7 +37,7 @@ export default function Main() {
   return (
     <div className="flex w-full max-w-sm items-center space-x-2">
       <Input
-        value={store.todoValue}
+        value={value}
         onChange={handleChange}
         type="email"
         placeholder="Add a task"
