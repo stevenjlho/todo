@@ -109,11 +109,11 @@ export default function Main() {
                 </SheetTrigger>
               </div>
               {/* <span onClick={() => handleUpdateImportant(item.id, item.important)}> */}
-              <span onClick={() => handleUpdate(item, "important")}>
+              <span className="cursor-pointer" onClick={() => handleUpdate(item, "important")}>
                 {item.important ? (
-                  <Star color="#f4e21a" fill="#f4e21a" />
+                  <Star size={20} color="#f4e21a" fill="#f4e21a" />
                 ) : (
-                  <Star />
+                  <Star size={20} />
                 )}
               </span>
             </div>
