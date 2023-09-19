@@ -26,7 +26,7 @@ export default function Sidebar() {
           <li
             key={item.value}
             className={`${
-              store.todoType === item.value && "bg-blue-100"
+              store.todoType === item.value && "bg-secondary"
             } cursor-pointer`}
             onClick={() => handleSetTodoType(item.value)}
           >

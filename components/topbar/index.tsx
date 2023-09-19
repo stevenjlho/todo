@@ -15,17 +15,17 @@ import { User, LogOut } from "lucide-react";
 export default function TopBar() {
   const { data: session } = useSession();
   return (
-    <div className="flex justify-end bg-blue-600">
+    <div className="flex justify-end bg-primary">
       {session && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="link">
+            <Button className="text-background" variant="link">
               <User className="mr-2 h-4 w-4" />
               {session?.user?.name}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
-            <DropdownMenuItem>
+            <DropdownMenuItem className="text-background">
               <LogOut className="mr-2 h-4 w-4" />
               <span className="cursor-pointer" onClick={() => signOut()}>
                 Log out
