@@ -1,12 +1,14 @@
 import { create } from "zustand";
 import { Todo } from "@prisma/client";
+import { apiFetchTodos, } from "@/lib/request";
 
 type initialState = {
-  page_loading: boolean;
+  pageLoading: boolean;
   setPageLoading: (loading: boolean) => void;
   todos: Todo[];
   todoValue: string;
   todoType: number;
+  fetchTodo: () => void;
   changeTodoType: (todo: number) => void;
   subTodoValue: string;
   addTodo: (todo: Todo) => void;
@@ -14,8 +16,8 @@ type initialState = {
   deleteTodo: (id: string) => void;
 };
 
-const useTodoStore = create<initialState>((set) => ({
-  page_loading: false,
+const useTodoStore = create<initialState>((set, get) => ({
+  pageLoading: false,
   todos: [],
   todoValue: "",
   subTodoValue: "",
@@ -25,7 +27,21 @@ const useTodoStore = create<initialState>((set) => ({
       todoType: type,
     })),
   setPageLoading: (loading: boolean) =>
-    set((state) => ({ ...state, page_loading: loading })),
+    set((state) => ({ ...state, pageLoading: loading })),
+  fetchTodo: async () => {
+    try {
+      const page = 1;
+      const limit = 10;
+      await get().setPageLoading(true);
+      const { data } = await apiFetchTodos(page, limit);
+      get().setTodoList(data?.todos ?? []);
+    } catch (error) {
+      console.error(error);
+    }
+    get().setPageLoading(false);
+    // const response = await fetch();
+    // set({ fishies: await response.json() });
+  },
   addTodo: (todo) =>
     set((state) => ({
       ...state,
