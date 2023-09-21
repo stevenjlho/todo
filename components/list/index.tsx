@@ -3,9 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import useTodoStore from "@/stores";
-import { apiFetchTodos, apiUpdateTodos, apiDeleteTodos } from "@/lib/request";
+import { apiUpdateTodos, apiDeleteTodos } from "@/lib/request";
 import { ChevronRight, ChevronDown, Trash2, Star } from "lucide-react";
-import { TodoType } from "@/lib/constant";
 import type { Todo } from "@prisma/client";
 
 import { Button } from "@/components/ui/button";
@@ -63,12 +62,8 @@ export default function Main() {
   }, []);
 
   const todosList = useMemo(() => {
-    if (store.todoType === TodoType.Important) {
-      return store.todos.filter((item) => item.important);
-    } else {
-      return store.todos;
-    }
-  }, [store.todos, store.todoType]);
+    return store.todos.filter((item) => !item.completed)
+  }, [store.todos]);
 
   // work out the length of items which are completed
   const completedList = useMemo(() => {
