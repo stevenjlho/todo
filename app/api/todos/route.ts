@@ -8,15 +8,8 @@ const prisma = new PrismaClient();
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
-    const pageStr = request.nextUrl.searchParams.get("page");
-    const limitStr = request.nextUrl.searchParams.get("limit");
-    const page = pageStr ? parseInt(pageStr, 10) : 1;
-    const limit = limitStr ? parseInt(limitStr, 10) : 10;
-    const skip = (page - 1) * limit;
 
     const todos = await prisma.todo.findMany({
-      skip,
-      take: limit,
       orderBy: {
         createdAt: "desc",
       },

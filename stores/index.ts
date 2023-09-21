@@ -30,10 +30,8 @@ const useTodoStore = create<initialState>((set, get) => ({
     set((state) => ({ ...state, pageLoading: loading })),
   fetchTodo: async () => {
     try {
-      const page = 1;
-      const limit = 10;
       await get().setPageLoading(true);
-      const { data } = await apiFetchTodos(page, limit);
+      const { data } = await apiFetchTodos();
       get().setTodoList(data?.todos ?? []);
     } catch (error) {
       console.error(error);
